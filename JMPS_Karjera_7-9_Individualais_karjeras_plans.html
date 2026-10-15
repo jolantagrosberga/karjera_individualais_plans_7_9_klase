@@ -85,6 +85,11 @@ h1{
   border:2px solid #43678c;background:rgba(255,255,255,.08);color:#d3e5f5;}
 .taimeris button:hover{background:var(--zils);border-color:var(--zils);color:#fff;}
 .taimeris button[aria-pressed="true"]{background:var(--oranžs);border-color:var(--oranžs);color:#fff;font-weight:700;}
+/* pilnekrāna poga */
+.pilneks{position:absolute;top:82px;right:118px;z-index:4;font:inherit;font-size:14px;height:42px;padding:0 14px;
+  border-radius:9px;cursor:pointer;white-space:nowrap;border:2px solid #43678c;background:rgba(255,255,255,.10);
+  color:#d3e5f5;letter-spacing:.01em;}
+.pilneks:hover{background:var(--zils);border-color:var(--zils);color:#fff;}
 /* skolēnu josla */
 .skolēniem-josla{display:flex;align-items:center;gap:12px;background:#f1f7f3;border-left:7px solid var(--zaļš);
   border-radius:5px;padding:8px 16px;margin:0 0 9px;font-size:20px;color:#2c3841;line-height:1.3;}
@@ -406,6 +411,7 @@ mark.izc{background:rgba(199,80,0,.14);color:#8f3a00;font-weight:700;padding:0 4
       <button type="button" id="tSākt">Sākt</button>
       <button type="button" id="tNullēt">Nullēt</button>
     </div>
+    <button type="button" class="pilneks" id="pilnekrans" title="Atvērt pilnekrāna režīmu">⛶ <span id="pilneksTeksts">Atvērt pilnekrānu</span></button>
     <img class="logo" id="logo" alt="Jaunmārupes pamatskolas logo">
   </header>
 
@@ -1179,6 +1185,27 @@ document.querySelectorAll('.krāsa').forEach(function(k){
 });
 document.getElementById('tāfeleNotīrīt').addEventListener('click',function(){ttx.clearRect(0,0,tāfele.width,tāfele.height);});
 ttx.lineCap='round';ttx.lineJoin='round';ttx.lineWidth=3.4;ttx.strokeStyle=tkrāsa;
+/* pilnekrāna režīms */
+(function(){
+  var p=document.getElementById('pilnekrans'), t=document.getElementById('pilneksTeksts');
+  function ir(){return document.fullscreenElement||document.webkitFullscreenElement;}
+  function stavoklis(){
+    t.textContent=ir()?'Aizvērt pilnekrānu':'Atvērt pilnekrānu';
+    p.title=ir()?'Iziet no pilnekrāna režīma':'Atvērt pilnekrāna režīmu';
+    mērogs();
+  }
+  p.addEventListener('click',function(){
+    try{
+      var r;
+      if(ir()){ r=(document.exitFullscreen||document.webkitExitFullscreen).call(document); }
+      else { var e=document.documentElement; r=(e.requestFullscreen||e.webkitRequestFullscreen).call(e); }
+      if(r&&r.catch){ r.catch(function(){}); }
+    }catch(x){}
+  });
+  document.addEventListener('fullscreenchange',stavoklis);
+  document.addEventListener('webkitfullscreenchange',stavoklis);
+  stavoklis();
+})();
 </script>
 </body>
 </html>
