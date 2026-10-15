@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mans karjeras plāns — darba lapa skolēnam</title>
+<style>
+:root{
+  --dziļi:#1F4E79; --zils:#2E74B5; --oranžs:#C75000; --zaļš:#2F7D53; --violets:#5B4B8A;
+  --pelēks:#e3e8ee; --tinte:#22292f;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Candara','Aptos','Segoe UI',Corbel,sans-serif;color:var(--tinte);
+  overflow:hidden;background:#081524;
+  background-image:
+    radial-gradient(circle at 18% 12%, rgba(46,116,181,.30) 0 260px, transparent 261px),
+    radial-gradient(circle at 84% 22%, rgba(91,75,138,.26) 0 300px, transparent 301px),
+    radial-gradient(circle at 70% 88%, rgba(47,125,83,.20) 0 280px, transparent 281px),
+    radial-gradient(circle at 50% 50%, #14304f 0%, #081524 72%);
+  background-attachment:fixed;
+}
+.skatuve{position:fixed;inset:0;overflow:hidden;}
+.planshete{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;
+  background:rgba(9,25,42,.72);border:1px solid rgba(255,255,255,.10);border-radius:10px;
+  box-shadow:0 18px 60px rgba(0,0,0,.55);padding:14px 24px 18px;overflow:hidden;}
+.planshete::before{content:"";position:absolute;left:0;top:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--oranžs) 0 25%,var(--dziļi) 25% 50%,var(--zaļš) 50% 75%,var(--violets) 75% 100%);opacity:.85;}
+
+/* galvene */
+.galvene{display:flex;align-items:center;gap:18px;height:92px;}
+h1{font-size:33px;font-weight:400;letter-spacing:.1em;margin:0;color:#fff;text-transform:uppercase;}
+.apakš{margin:5px 0 0;font-size:15px;color:#9db8d2;}
+.dati{margin-left:auto;display:flex;gap:10px;align-items:center;}
+.dati label{font-size:13px;color:#9db8d2;display:block;margin-bottom:3px;letter-spacing:.04em;}
+.dati input{font:inherit;font-size:16px;border:2px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);
+  color:#fff;border-radius:6px;padding:8px 10px;height:42px;}
+.dati input::placeholder{color:#7f9ab4;}
+.dati .v{width:230px;} .dati .k{width:90px;} .dati .d{width:130px;}
+
+/* cilnes */
+nav{display:flex;gap:6px;margin:8px 0 0;border-bottom:2px solid rgba(255,255,255,.16);}
+nav button{font:inherit;font-size:18.5px;border:0;background:rgba(255,255,255,.07);color:#b9cfe4;
+  padding:10px 18px;border-radius:6px 6px 0 0;cursor:pointer;height:48px;white-space:nowrap;
+  border-bottom:3px solid transparent;margin-bottom:-2px;}
+nav button:hover{background:rgba(255,255,255,.14);color:#fff;}
+nav button .nr{font-weight:700;opacity:.55;margin-right:7px;}
+nav button[aria-selected="true"]{background:#fff;border-bottom-color:var(--oranžs);color:var(--dziļi);font-weight:700;}
+nav button[aria-selected="true"] .nr{opacity:1;color:var(--oranžs);}
+button:focus-visible{outline:3px solid #fff;outline-offset:2px;}
+
+section{display:none;background:#fff;border-radius:10px;padding:16px 22px;margin-top:10px;height:668px;
+  overflow:hidden;box-shadow:0 10px 34px rgba(0,0,0,.32);}
+section.akt{display:block;animation:ien .2s ease-out;}
+@keyframes ien{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+h2{font-size:29px;font-weight:400;letter-spacing:.06em;margin:0 0 3px;color:var(--dziļi);}
+.pal{margin:0 0 14px;font-size:19px;color:#5c6670;line-height:1.4;}
+
+/* čipi */
+.cipi{display:flex;flex-wrap:wrap;gap:7px;}
+.cips{font:inherit;font-size:17px;border:2px solid #cfd8e2;background:#fff;border-radius:999px;
+  padding:7px 16px;cursor:pointer;min-height:40px;color:#33404c;}
+.cips:hover{border-color:var(--oranžs);color:var(--oranžs);}
+.cips[aria-pressed="true"]{background:var(--dziļi);border-color:var(--dziļi);color:#fff;font-weight:700;}
+.kaste{border:3px solid var(--pelēks);border-radius:8px;padding:12px 14px;}
+.kaste h3{margin:0 0 3px;font-size:21px;color:var(--dziļi);letter-spacing:.03em;}
+.kaste .pam{margin:0 0 10px;font-size:16px;color:#8a949e;}
+.trīs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+
+textarea,input.lauks{font:inherit;width:100%;border:2px solid #cfd8e2;border-radius:6px;padding:10px 13px;
+  font-size:19px;color:#22292f;resize:none;background:#fff;}
+textarea:focus,input.lauks:focus{outline:none;border-color:var(--zils);}
+.lab{font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:#78838e;margin:11px 0 5px;display:block;}
+
+/* 2. mērķis */
+.merk{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.merk .kaste{display:flex;flex-direction:column;}
+.merk textarea{margin-top:10px;height:92px;}
+.parbaude{margin-top:16px;background:#fdf3ec;border-left:7px solid var(--oranžs);border-radius:4px;padding:14px 18px;font-size:19px;color:#5a4033;line-height:1.4;}
+
+/* 3. ceļi */
+.celi{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.cels{font:inherit;text-align:left;border:3px solid var(--pelēks);background:#f7f9fb;border-radius:8px;
+  padding:0 0 10px;cursor:pointer;color:inherit;overflow:hidden;display:flex;flex-direction:column;}
+.cels .lente{height:8px;flex:0 0 auto;}
+.cels .iekš{padding:9px 12px 0;}
+.cels .b{width:34px;height:34px;border-radius:8px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;margin-bottom:8px;}
+.cels .n{font-size:17px;color:var(--dziļi);font-weight:700;line-height:1.2;display:block;}
+.cels .i{font-size:14.5px;color:#8a949e;}
+.cels[aria-pressed="true"]{background:#fff;border-color:var(--dziļi);box-shadow:0 6px 16px rgba(31,78,121,.18);}
+.izvelne{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.izv-bloks{border:3px solid var(--pelēks);border-radius:8px;padding:12px 15px;min-height:150px;}
+.izv-bloks h3{margin:0 0 8px;font-size:19px;color:var(--dziļi);}
+.iest-saraksts{display:flex;flex-wrap:wrap;gap:7px;max-height:168px;overflow:auto;}
+.iest{font:inherit;font-size:16px;border:2px solid #cfd8e2;background:#fff;border-radius:6px;padding:6px 12px;cursor:pointer;color:#33404c;}
+.iest:hover{border-color:var(--zils);}
+.tukšs{font-size:18px;color:#9aa4ae;}
+
+/* 4. šķēršļi */
+.sk-rezg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-content:start;}
+.sk-k{border:3px solid var(--pelēks);border-radius:8px;padding:10px 13px;}
+.sk-k h3{margin:0 0 6px;font-size:17px;color:var(--dziļi);display:flex;gap:9px;align-items:flex-start;line-height:1.25;}
+.sk-k h3 input{width:21px;height:21px;accent-color:#1F4E79;margin-top:1px;}
+.sk-k .risin{display:none;}
+.sk-k.atv .risin{display:block;}
+.rad{display:block;font-size:16px;color:#41505e;margin:5px 0;cursor:pointer;line-height:1.32;}
+.rad input{margin-right:8px;accent-color:#2F7D53;width:17px;height:17px;}
+
+/* 5. kalendārs */
+.kal-rezg{display:grid;grid-template-columns:1.25fr 1fr;gap:16px;}
+.kal{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.men{border:3px solid var(--pelēks);border-radius:8px;padding:8px 10px;}
+.men .n{font-size:13.5px;color:var(--dziļi);font-weight:700;letter-spacing:.04em;}
+.men input{margin-top:5px;font-size:14.5px;padding:6px 9px;}
+.men.mērķis{border-color:var(--zils);}
+.iet-saraksts{border:3px solid var(--pelēks);border-radius:8px;padding:12px;max-height:356px;overflow:auto;}
+.savs{border:3px solid var(--zaļš);border-radius:8px;padding:10px 12px;margin-top:10px;background:#f2f8f4;}
+.savs-rinda{display:flex;gap:8px;}
+.savs-rinda input{flex:1;}
+.poga.klusa{background:#fff;border-color:var(--zaļš);color:var(--zaļš);font-size:15px;padding:9px 16px;white-space:nowrap;}
+.poga.klusa:hover{background:var(--zaļš);color:#fff;}
+.iet{display:block;width:100%;text-align:left;font:inherit;font-size:14px;border:2px solid #cfd8e2;background:#fff;
+  border-radius:6px;padding:6px 10px;margin-bottom:6px;cursor:pointer;color:#33404c;}
+.iet:hover{border-color:var(--zaļš);color:var(--zaļš);}
+
+/* 6. soļi */
+.soli{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.soli textarea{height:70px;margin-top:8px;}
+.izdruka{margin-top:14px;display:flex;gap:12px;align-items:center;}
+.poga{font:inherit;font-size:17px;border:2px solid var(--oranžs);background:var(--oranžs);color:#fff;
+  border-radius:6px;padding:11px 24px;cursor:pointer;font-weight:700;}
+.poga:hover{background:#a94300;border-color:#a94300;}
+.info{font-size:16px;color:#5c6670;line-height:1.4;max-width:880px;}
+
+/* druka */
+#druka{display:none;}
+@media print{
+  body{background:#fff;overflow:visible;}
+  .skatuve,.planshete{position:static;width:auto;height:auto;background:#fff;border:0;box-shadow:none;transform:none!important;padding:0;}
+  .planshete::before{display:none;}
+  .nedrukāt{display:none!important;}
+  #druka{display:block!important;font-size:11.5pt;color:#111;}
+  #druka h1{font-size:17pt;color:var(--dziļi);text-transform:uppercase;letter-spacing:.06em;margin:0 0 2mm;}
+  #druka .meta{font-size:10pt;color:#555;border-bottom:2px solid var(--dziļi);padding-bottom:2mm;margin-bottom:4mm;}
+  #druka h2{font-size:12pt;color:#fff;background:var(--dziļi);padding:1.5mm 3mm;border-radius:2mm;margin:4mm 0 2mm;letter-spacing:.04em;}
+  #druka table{width:100%;border-collapse:collapse;}
+  #druka td,#druka th{border:1px solid #b8c3cd;padding:2mm 2.5mm;font-size:10.5pt;vertical-align:top;}
+  #druka th{background:#eef2f6;text-align:left;color:var(--dziļi);font-size:9.5pt;width:34%;}
+  #druka .kāj{margin-top:6mm;font-size:8.5pt;color:#888;}
+  @page{size:A4 portrait;margin:14mm;}
+}
+</style>
+</head>
+<body>
+<div class="skatuve nedrukāt" id="skatuve">
+<div class="planshete" id="planshete">
+
+  <header class="galvene">
+    <div>
+      <h1>Mans karjeras plāns</h1>
+      <p class="apakš">Aizpildi pakāpeniski kopā ar skolotāju · beigās saglabā savu plānu PDF datnē</p>
+    </div>
+    <div class="dati">
+      <div><label for="sVards">Vārds, uzvārds</label><input class="v" id="sVards" placeholder="Vārds Uzvārds"></div>
+      <div><label for="sKlase">Klase</label><input class="k" id="sKlase" placeholder="9.a"></div>
+      <div><label for="sDatums">Datums</label><input class="d" id="sDatums" placeholder="15.10.2026."></div>
+    </div>
+  </header>
+
+  <nav role="tablist">
+    <button role="tab" aria-selected="true"  data-p="s1"><span class="nr">1</span>Es šodien</button>
+    <button role="tab" aria-selected="false" data-p="s3"><span class="nr">2</span>Mans ceļš</button>
+    <button role="tab" aria-selected="false" data-p="s2"><span class="nr">3</span>Mans mērķis</button>
+    <button role="tab" aria-selected="false" data-p="s4"><span class="nr">4</span>Šķēršļi un B plāns</button>
+    <button role="tab" aria-selected="false" data-p="s5"><span class="nr">5</span>Mans kalendārs un PDF</button>
+  </nav>
+
+  <section class="akt" id="s1">
+    <h2>Es šodien</h2>
+    <p class="pal">Noklikšķini uz vārdiem, kas der tev — līdz trim katrā grupā. Laukā zem saraksta vari ierakstīt arī savu variantu.</p>
+    <div class="trīs" id="grupas"></div>
+  </section>
+
+  <section id="s2">
+    <h2>Mans mērķis</h2>
+    <p class="pal">Izvēlies gatavu variantu vai ieraksti savu. Mērķis ir pilnīgs tikai tad, kad aizpildītas visas trīs daļas.</p>
+    <div class="merk" id="merk"></div>
+    <div class="parbaude">Pārbaude: ja šo mērķi lasītu cits cilvēks, vai viņš saprastu, kas tieši jādara un kad?</div>
+  </section>
+
+  <section id="s3">
+    <h2>Mans ceļš pēc 9. klases</h2>
+    <p class="pal">Atzīmē divus ceļus, kas tev šķiet iespējami. Pēc tam no saraksta izvēlies konkrētas izglītības iestādes.</p>
+    <div class="celi" id="celi"></div>
+    <div class="izvelne" id="izvelne"></div>
+  </section>
+
+  <section id="s4">
+    <h2>Šķēršļi un mans B plāns</h2>
+    <p class="pal">Atzīmē <b>trīs</b> šķēršļus, kas varētu attiekties uz tevi, un pie katra izvēlies, ko darīsi. Atzīmēti: <b id="skSkaits">0 no 3</b></p>
+    <div class="sk-rezg" id="skersli"></div>
+  </section>
+
+  <section id="s5">
+    <h2>Mans kalendārs</h2>
+    <p class="pal">Vispirms noklikšķini uz mēneša, tad uz ieteikuma — tas tiks ierakstīts izvēlētajā mēnesī. Vari pierakstīt arī savu darbību.</p>
+    <div class="kal-rezg">
+      <div class="kal" id="kal"></div>
+      <div>
+        <div class="iet-saraksts" id="ieteikumi"></div>
+        <div class="savs">
+          <span class="lab" style="margin-top:0">Mans ieteikums</span>
+          <div class="savs-rinda">
+            <input class="lauks" id="savsIeteikums" placeholder="Ieraksti savu darbību">
+            <button class="poga klusa" type="button" id="savsPievienot">Pievienot mēnesim</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="izdruka">
+      <button class="poga" type="button" id="pdfPoga">Saglabāt PDF</button>
+      <span class="info">Kad viss ir aizpildīts, nospied šo pogu. Drukas logā pie „Mērķis” vai „Printeris” izvēlies <b>„Saglabāt kā PDF”</b> un saglabā datni savā datorā vai e-klasē. Aizverot vai pārlādējot lapu, atbildes netiek saglabātas — tāpēc saglabā PDF, pirms aizver lapu.</span>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<div id="druka"></div>
+
+<script>
+/* ---------- 16:9 mērogošana ---------- */
+var PL=1600,AU=900,lapa=document.getElementById('planshete');
+function mērogs(){
+  var w=window.innerWidth,h=window.innerHeight,m=Math.min(w/PL,h/AU);
+  lapa.style.transform='translate('+((w-PL*m)/2)+'px,'+((h-AU*m)/2)+'px) scale('+m+')';
+}
+window.addEventListener('resize',mērogs);mērogs();
+
+document.querySelectorAll('nav button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('nav button').forEach(function(x){x.setAttribute('aria-selected','false');});
+    document.querySelectorAll('section').forEach(function(x){x.classList.remove('akt');});
+    b.setAttribute('aria-selected','true');
+    document.getElementById(b.dataset.p).classList.add('akt');
+  });
+});
+
+/* ---------- 1. ES ŠODIEN ---------- */
+var GRUPAS=[
+ {id:'i',n:'Mani interesē',p:'Kas mani aizrauj arī brīvajā laikā?',v:['tehnika un mehānika','datori un programmēšana','darbs ar cilvēkiem','māksla un dizains','valodas un teksti','daba un dzīvnieki','sports un kustība','ēdiens un gatavošana','uzņēmējdarbība','būvniecība un remonts','veselība un medicīna','mūzika un skatuve']},
+ {id:'p',n:'Man padodas',p:'Ko es jau tagad protu labi?',v:['plānot savu laiku','strādāt komandā','uzstāties klausītāju priekšā','risināt problēmas','zīmēt un noformēt','rēķināt un analizēt','rakstīt tekstus','labot un montēt lietas','uzrunāt nepazīstamus cilvēkus','organizēt citus','pamanīt detaļas','mācīties patstāvīgi']},
+ {id:'v',n:'Darbā man būs svarīgi',p:'Kas man darbā būs svarīgi?',v:['stabilitāte','labs atalgojums','brīvs darba laiks','palīdzēt citiem','radošums','izaugsme','laba komanda','darbs ārpus telpām','klusums un koncentrēšanās','redzams rezultāts']}
+];
+var gE=document.getElementById('grupas');
+GRUPAS.forEach(function(g){
+  var d=document.createElement('div');
+  d.className='kaste';
+  d.innerHTML='<h3>'+g.n+'</h3><p class="pam">'+g.p+'</p><div class="cipi"></div>'+
+    '<span class="lab">Mana atbilde</span><textarea id="lauks-'+g.id+'" rows="3" placeholder="Ieraksti savu atbildi vai izvēlies augstāk"></textarea>';
+  var c=d.querySelector('.cipi'),lauks=d.querySelector('textarea');
+  g.v.forEach(function(v){
+    var b=document.createElement('button');
+    b.className='cips';b.type='button';b.setAttribute('aria-pressed','false');b.textContent=v;
+    b.addEventListener('click',function(){
+      var sar=lauks.value.split(',').map(function(x){return x.trim();}).filter(Boolean);
+      var x=sar.indexOf(v);
+      if(x>=0){sar.splice(x,1);b.setAttribute('aria-pressed','false');}
+      else{if(sar.length>=3){return;}sar.push(v);b.setAttribute('aria-pressed','true');}
+      lauks.value=sar.join(', ');
+    });
+    c.appendChild(b);
+  });
+  gE.appendChild(d);
+});
+
+/* ---------- 2. MĒRĶIS ---------- */
+var MERK=[
+ {id:'ko',n:'Ko es izdarīšu',k:'#C75000',v:['pabeigšu 9. klasi ar vidējo vērtējumu vismaz 7 balles','iestāšos vidusskolā ar dabaszinātņu virzienu','iestāšos tehnikumā izvēlētajā programmā','uzlabošu vērtējumu kādā mācību priekšmetā','sagatavošu darbu mapi iestājpārbaudījumam','atradīšu vasaras darbu vai praksi','iepazīšu trīs profesijas Ēnu dienā']},
+ {id:'kad',n:'Līdz kuram brīdim',k:'#2E74B5',v:['līdz šī mēneša beigām','līdz Ziemassvētkiem','līdz semestra beigām','līdz 9. klases izlaidumam','līdz nākamā gada septembrim']},
+ {id:'ka',n:'Kā zināšu, ka izdevās',k:'#2F7D53',v:['sekmju izraksts','uzņemšanas rezultāts','pabeigts darbs manā darbu mapē','kursa beigšanas apliecība','darba līgums vai prakses atsauksme','aizpildītas Ēnu dienas anketas','skolotāja vai darba devēja vērtējums']}
+];
+var mE=document.getElementById('merk');
+MERK.forEach(function(g){
+  var d=document.createElement('div');
+  d.className='kaste';
+  d.innerHTML='<h3 style="color:'+g.k+'">'+g.n+'</h3><div class="cipi"></div>'+
+    '<textarea id="merk-'+g.id+'" rows="3" placeholder="Izvēlies vai ieraksti savu"></textarea>';
+  var c=d.querySelector('.cipi'),lauks=d.querySelector('textarea');
+  g.v.forEach(function(v){
+    var b=document.createElement('button');
+    b.className='cips';b.type='button';b.setAttribute('aria-pressed','false');b.textContent=v;
+    b.addEventListener('click',function(){
+      c.querySelectorAll('.cips').forEach(function(x){x.setAttribute('aria-pressed','false');});
+      b.setAttribute('aria-pressed','true');lauks.value=v;
+    });
+    c.appendChild(b);
+  });
+  mE.appendChild(d);
+});
+
+/* ---------- 3. CEĻI ---------- */
+var CELI=[
+ {b:'A',n:'Vidusskola vai ģimnāzija',i:'3 gadi',k:'#1F4E79',s:['Mārupes Valsts ģimnāzija','Babītes vidusskola, Piņķi','Olaines 1. vidusskola','Olaines 2. vidusskola','Ķekavas vidusskola','Baložu vidusskola','Baldones vidusskola','Ozolnieku vidusskola','Jūrmalas Valsts ģimnāzija','Jelgavas Valsts ģimnāzija','Rīgas Valsts 1. ģimnāzija','Rīgas Valsts 2. ģimnāzija','Rīgas Valsts 3. ģimnāzija','Rīgas Āgenskalna Valsts ģimnāzija','Rīgas Valsts klasiskā ģimnāzija','Rīgas Valsts vācu ģimnāzija','Rīgas Angļu ģimnāzija']},
+ {b:'B',n:'Tehnikums vai profesionālā vidusskola',i:'3,5–4 gadi',k:'#2F7D53',s:['Rīgas Valsts tehnikums','Ogres tehnikums','Rīgas Tūrisma un radošās industrijas tehnikums','Rīgas Stila un modes tehnikums','Jelgavas Tehnikums','Smiltenes tehnikums','Saldus tehnikums','Kuldīgas Tehnoloģiju un tūrisma tehnikums','Vidzemes Tehnoloģiju un dizaina tehnikums','Liepājas Valsts tehnikums','Ventspils Tehnikums','Rēzeknes tehnikums','Daugavpils Tehnoloģiju un tūrisma tehnikums']},
+ {b:'C',n:'Mākslu, mūzikas un dejas izglītība',i:'4 gadi',k:'#5B4B8A',s:['Rīgas Dizaina un mākslas vidusskola','Rīgas Mākslas un mediju tehnikums','Nacionālā Mākslu vidusskola','Jāzepa Mediņa Rīgas Mūzikas vidusskola','Jelgavas Mūzikas vidusskola','Ventspils Mūzikas vidusskola','Daugavpils Dizaina un mākslas vidusskola „Saules skola”']},
+ {b:'D',n:'Arodizglītība',i:'2,5–3 gadi',k:'#C75000',s:['Rīgas Valsts tehnikums','Ogres tehnikums','Smiltenes tehnikums','Saldus tehnikums','Rīgas Stila un modes tehnikums','Vidzemes Tehnoloģiju un dizaina tehnikums']},
+ {b:'E',n:'Sporta un citi specializētie virzieni',i:'3–4 gadi',k:'#8a5a1f',s:['Murjāņu sporta ģimnāzija','Mārupes Valsts ģimnāzija','Jūrmalas Valsts ģimnāzija']}
+];
+var izvCeli=[];
+var cE=document.getElementById('celi'),izvE=document.getElementById('izvelne');
+CELI.forEach(function(c,i){
+  var b=document.createElement('button');
+  b.className='cels';b.type='button';b.setAttribute('aria-pressed','false');
+  b.innerHTML='<div class="lente" style="background:'+c.k+'"></div><div class="iekš">'+
+    '<div class="b" style="background:'+c.k+'">'+c.b+'</div><span class="n">'+c.n+'</span><span class="i">'+c.i+'</span></div>';
+  b.addEventListener('click',function(){
+    var x=izvCeli.indexOf(i);
+    if(x>=0){izvCeli.splice(x,1);b.setAttribute('aria-pressed','false');}
+    else{
+      if(izvCeli.length>=2){return;}
+      izvCeli.push(i);b.setAttribute('aria-pressed','true');
+    }
+    ceļiRādi();
+  });
+  cE.appendChild(b);
+});
+function ceļiRādi(){
+  if(!izvCeli.length){
+    izvE.innerHTML='<div class="izv-bloks"><p class="tukšs">Atzīmē divus ceļus, un šeit parādīsies to izglītības iestādes.</p></div>'+
+      '<div class="izv-bloks"><p class="tukšs">&nbsp;</p></div>';
+    return;
+  }
+  izvE.innerHTML=izvCeli.map(function(i,poz){
+    var c=CELI[i];
+    return '<div class="izv-bloks" style="border-color:'+c.k+'">'+
+      '<h3 style="color:'+c.k+'">'+c.b+'. '+c.n+'</h3>'+
+      '<div class="iest-saraksts" data-c="'+poz+'">'+c.s.map(function(x){return '<button type="button" class="iest">'+x+'</button>';}).join('')+'</div>'+
+      '<span class="lab">Mana izvēle un programma</span>'+
+      '<textarea id="cels-'+poz+'" rows="2" placeholder="Iestāde un programma"></textarea></div>';
+  }).join('')+(izvCeli.length===1?'<div class="izv-bloks"><p class="tukšs">Atzīmē vēl vienu ceļu.</p></div>':'');
+  izvE.querySelectorAll('.iest').forEach(function(b){
+    b.addEventListener('click',function(){
+      var poz=b.closest('.iest-saraksts').dataset.c,l=document.getElementById('cels-'+poz);
+      l.value=(l.value?l.value.replace(/\s*$/,'')+'; ':'')+b.textContent;
+      l.focus();
+    });
+  });
+}
+ceļiRādi();
+
+/* ---------- 4. ŠĶĒRŠĻI ---------- */
+var SKERSLI=[
+ {n:'Eksāmenu rezultāts ir zemāks, nekā gaidīju',r:['Noskaidrošu, cik svarīgi iestādei ir eksāmenu rezultāti un cik — gada vērtējumi','Apskatīšu citu programmu tajā pašā iestādē','Parunāšu ar klases audzinātāju vai karjeras konsultantu']},
+ {n:'Mani neuzņem izvēlētajā iestādē',r:['Pieteikšos vairākās iestādēs, ne tikai vienā','Noskaidrošu, kas tieši pietrūka','Apsvēršu to pašu nozari citā iestādē']},
+ {n:'Iestāde atrodas tālu no mājām',r:['Noskaidrošu, vai ir dienesta viesnīca','Aprēķināšu, cik laika aizņem ceļš','Pārbaudīšu, vai ir tiešs sabiedriskā transporta reiss']},
+ {n:'Ģimenei nepietiek līdzekļu',r:['Noskaidrošu, vai programmā ir stipendija','Noskaidrošu pašvaldības atbalstu ēdināšanai un transportam','Izvēlēšos programmu, kurā praksi apmaksā uzņēmums']},
+ {n:'Doma ir mainījusies — gribu ko citu',r:['Noskaidrošu, kas tieši ir mainījies','Parunāšu ar cilvēku, kurš šajā jomā strādā','Iepazīšu jomu praksē, pirms mainu plānu']},
+ {n:'Es vēl nezinu, ko gribu darīt',r:['Pirmais mērķis ir noskaidrot, nevis izlemt','Izpētīšu trīs profesijas, kas mani interesē','Pieteikšos Ēnu dienai un karjeras konsultācijai']},
+ {n:'Vecāki vēlas citu izvēli, nevis manējo',r:['Parādīšu vecākiem savu plānu un pamatošu izvēli','Noskaidrošu, kas vecākus satrauc','Aiziešu uz atvērto durvju dienu kopā ar vecākiem']},
+ {n:'Draugi izvēlas citu skolu, un es palikšu viens',r:['Izvēlēšos pēc programmas, nevis pēc draugiem','Uzzināšu, kādas interešu grupas ir jaunajā iestādē','Ar draugiem varu satikties arī ārpus skolas']},
+ {n:'Man nepietiek motivācijas mācīties',r:['Sadalīšu mērķi mazos soļos ar termiņiem','Sākšu ar vienu mācību priekšmetu, nevis ar visiem uzreiz','Palūgšu palīdzību skolotājam vai klasesbiedram']},
+ {n:'Nepaspēšu sagatavoties iestājpārbaudījumiem',r:['Uzzināšu precīzus datumus un prasības jau tagad','Izveidošu nedēļas grafiku gatavošanās darbiem','Palūgšu konsultācijas attiecīgajā priekšmetā']}
+];
+var SK_MAKS=3, skAtzīmēti=0;
+var skE=document.getElementById('skersli');
+SKERSLI.forEach(function(s,i){
+  var d=document.createElement('div');
+  d.className='sk-k';
+  d.innerHTML='<h3><input type="checkbox" id="sk-'+i+'"> <label for="sk-'+i+'">'+s.n+'</label></h3>'+
+    '<div class="risin">'+s.r.map(function(r){
+      return '<label class="rad"><input type="radio" name="skr-'+i+'" value="'+r.replace(/"/g,'&quot;')+'">'+r+'</label>';
+    }).join('')+
+    '<label class="rad"><input type="radio" name="skr-'+i+'" value="__cits">Mans risinājums:</label>'+
+    '<input class="lauks" id="skc-'+i+'" placeholder="Ieraksti savu risinājumu"></div>';
+  var cb=d.querySelector('input[type=checkbox]');
+  cb.addEventListener('change',function(){
+    if(cb.checked&&skAtzīmēti>=SK_MAKS){cb.checked=false;return;}
+    skAtzīmēti+=cb.checked?1:-1;
+    d.classList.toggle('atv',cb.checked);
+    document.getElementById('skSkaits').textContent=skAtzīmēti+' no '+SK_MAKS;
+  });
+  skE.appendChild(d);
+});
+
+/* ---------- 5. KALENDĀRS ---------- */
+var MENESI=['Septembris','Oktobris','Novembris','Decembris','Janvāris','Februāris','Marts–aprīlis','Maijs–jūnijs'];
+var IETEIKUMI=['Izrakstīt trīs profesijas, par kurām gribu uzzināt vairāk','Atzīmēt kalendārā atvērto durvju dienas','Pārrunāt plānu mājās','Izpētīt trīs izglītības iestāžu tīmekļvietnes','Salīdzināt uzņemšanas prasības','Pieteikties karjeras konsultācijai','Aprunāties ar cilvēku, kurš strādā šajā profesijā','Apmeklēt atvērto durvju dienu','Salīdzināt vērtējumus ar uzņemšanas prasībām','Sākt apmeklēt konsultācijas','Sākt kārtot darbu mapi','Sākt gatavoties eksāmeniem pēc grafika','Precizēt otro un trešo izvēli','Pārbaudīt iestājpārbaudījumu datumus','Piedalīties Ēnu dienā','Apmeklēt izglītības izstādi','Noskaidrot, kādi dokumenti jāiesniedz','Sagatavot dokumentus','Kārtot iestājpārbaudījumus','Nokārtot eksāmenus','Pieteikties vismaz divās iestādēs','Pārskatīt plānu pēc rezultātiem'];
+var kalE=document.getElementById('kal'),ietE=document.getElementById('ieteikumi');
+var aktīvaisMēnesis=0;
+MENESI.forEach(function(m,i){
+  var d=document.createElement('div');
+  d.className='men'+(i===0?' mērķis':'');
+  d.innerHTML='<div class="n">'+m+'</div><input class="lauks" id="men-'+i+'" placeholder="Ko darīšu">';
+  d.querySelector('input').addEventListener('focus',function(){
+    aktīvaisMēnesis=i;
+    kalE.querySelectorAll('.men').forEach(function(x,j){x.classList.toggle('mērķis',j===i);});
+  });
+  kalE.appendChild(d);
+});
+ietE.innerHTML='<div class="lab" style="margin-top:0">Ieteikumi — uzklikšķini</div>';
+IETEIKUMI.forEach(function(t){
+  var b=document.createElement('button');
+  b.className='iet';b.type='button';b.textContent=t;
+  b.addEventListener('click',function(){
+    var l=document.getElementById('men-'+aktīvaisMēnesis);
+    l.value=(l.value?l.value.replace(/\s*$/,'')+'; ':'')+t;
+  });
+  ietE.appendChild(b);
+});
+
+/* ---------- Savs ieteikums kalendārā ---------- */
+document.getElementById('savsPievienot').addEventListener('click',function(){
+  var t=document.getElementById('savsIeteikums').value.trim(); if(!t){return;}
+  var l=document.getElementById('men-'+aktīvaisMēnesis);
+  l.value=(l.value?l.value.replace(/\s*$/,'')+'; ':'')+t;
+  document.getElementById('savsIeteikums').value='';
+});
+
+/* ---------- DRUKA: tikai skolēna atbildes ---------- */
+function v(id){var e=document.getElementById(id);return e&&e.value?e.value.trim():'';}
+function rinda(nos,vērt){return vērt?'<tr><th>'+nos+'</th><td>'+vērt.replace(/</g,'&lt;')+'</td></tr>':'';}
+function būvēDruku(){
+  var h='<h1>Individuālais karjeras plāns</h1>';
+  h+='<div class="meta">'+(v('sVards')||'____________________')+' · '+(v('sKlase')||'____')+'. klase · '+(v('sDatums')||'')+'</div>';
+
+  var t1=rinda('Mani interesē',v('lauks-i'))+rinda('Man padodas',v('lauks-p'))+rinda('Darbā man būs svarīgi',v('lauks-v'));
+  if(t1){h+='<h2>Es šodien</h2><table>'+t1+'</table>';}
+
+  var t3='';
+  izvCeli.forEach(function(i,poz){
+    var c=CELI[i];
+    t3+=rinda(c.b+'. '+c.n,v('cels-'+poz)||'ceļš izvēlēts, iestāde vēl nav pierakstīta');
+  });
+  if(t3){h+='<h2>Mans ceļš pēc 9. klases</h2><table>'+t3+'</table>';}
+
+  var t2=rinda('Ko es izdarīšu',v('merk-ko'))+rinda('Līdz kuram brīdim',v('merk-kad'))+rinda('Kā zināšu, ka izdevās',v('merk-ka'));
+  if(t2){h+='<h2>Mans mērķis</h2><table>'+t2+'</table>';}
+
+  var t4='';
+  SKERSLI.forEach(function(s,i){
+    var cb=document.getElementById('sk-'+i);
+    if(!cb||!cb.checked){return;}
+    var r=document.querySelector('input[name="skr-'+i+'"]:checked');
+    var teksts=r?(r.value==='__cits'?v('skc-'+i):r.value):v('skc-'+i);
+    t4+=rinda(s.n,teksts||'—');
+  });
+  if(t4){h+='<h2>Šķēršļi un mans B plāns</h2><table>'+t4+'</table>';}
+
+  var t5='';
+  MENESI.forEach(function(m,i){t5+=rinda(m,v('men-'+i));});
+  if(t5){h+='<h2>Mans kalendārs</h2><table>'+t5+'</table>';}
+
+  h+='<div class="kāj">Jaunmārupes pamatskola · karjeras izglītība 7.–9. klasei · J. Grosberga-Gernere</div>';
+  document.getElementById('druka').innerHTML=h;
+}
+document.getElementById('pdfPoga').addEventListener('click',function(){window.print();});
+window.addEventListener('beforeprint',būvēDruku);
+</script>
+</body>
+</html>
