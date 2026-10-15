@@ -92,10 +92,13 @@ textarea:focus,input.lauks:focus{outline:none;border-color:var(--zils);}
 .izvelne{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .izv-bloks{border:3px solid var(--pelēks);border-radius:8px;padding:12px 15px;min-height:150px;}
 .izv-bloks h3{margin:0 0 8px;font-size:19px;color:var(--dziļi);}
-.iest-saraksts{display:flex;flex-wrap:wrap;gap:7px;max-height:168px;overflow:auto;}
-.iest{font:inherit;font-size:16px;border:2px solid #cfd8e2;background:#fff;border-radius:6px;padding:6px 12px;cursor:pointer;color:#33404c;}
+.iest-saraksts{display:flex;flex-wrap:wrap;gap:8px;max-height:176px;overflow:auto;}
+.iest{font:inherit;font-size:17px;border:2px solid #cfd8e2;background:#fff;border-radius:6px;padding:6px 12px;cursor:pointer;color:#33404c;}
 .iest:hover{border-color:var(--zils);}
+.iest[aria-pressed="true"]{background:#1F4E79;border-color:#1F4E79;color:#fff;font-weight:700;}
+.izv-skaidr{margin:10px 0 0;font-size:16px;line-height:1.35;color:#4d5a66;border-top:2px solid var(--pelēks);padding-top:9px;}
 .tukšs{font-size:18px;color:#9aa4ae;}
+.paralēli{margin:10px 0 0;font-size:15.5px;line-height:1.3;color:#5a6673;background:#f3f6f9;border-left:6px solid #8a949e;border-radius:4px;padding:8px 14px;}
 
 /* 4. šķēršļi */
 .sk-rezg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-content:start;}
@@ -191,8 +194,9 @@ textarea:focus,input.lauks:focus{outline:none;border-color:var(--zils);}
 
   <section id="s3">
     <h2>Mans ceļš pēc 9. klases</h2>
-    <p class="pal">Atzīmē divus ceļus, kas tev šķiet iespējami. Pēc tam no saraksta izvēlies konkrētas izglītības iestādes.</p>
+    <p class="pal">Atzīmē divus ceļus, kas tev šķiet iespējami. Pēc tam sarakstā noklikšķini uz izglītības iestādēm, kuras vēlies apskatīt tuvāk — tās nonāks tavā PDF plānā.</p>
     <div class="celi" id="celi"></div>
+    <p class="paralēli">Paralēli jebkuram ceļam: mūzikas, mākslas vai sporta skola (profesionālās ievirzes izglītība). Īpašs gadījums — Murjāņu sporta ģimnāzija: tā apvieno vidējo izglītību ar sporta sagatavošanu, uzņem 8.–12. klasē, ar atlasi un medicīnisko pārbaudi.</p>
     <div class="izvelne" id="izvelne"></div>
   </section>
 
@@ -302,11 +306,21 @@ MERK.forEach(function(g){
 
 /* ---------- 3. CEĻI ---------- */
 var CELI=[
- {b:'A',n:'Vidusskola vai ģimnāzija',i:'3 gadi',k:'#1F4E79',s:['Mārupes Valsts ģimnāzija','Babītes vidusskola, Piņķi','Olaines 1. vidusskola','Olaines 2. vidusskola','Ķekavas vidusskola','Baložu vidusskola','Baldones vidusskola','Ozolnieku vidusskola','Jūrmalas Valsts ģimnāzija','Jelgavas Valsts ģimnāzija','Rīgas Valsts 1. ģimnāzija','Rīgas Valsts 2. ģimnāzija','Rīgas Valsts 3. ģimnāzija','Rīgas Āgenskalna Valsts ģimnāzija','Rīgas Valsts klasiskā ģimnāzija','Rīgas Valsts vācu ģimnāzija','Rīgas Angļu ģimnāzija']},
- {b:'B',n:'Tehnikums vai profesionālā vidusskola',i:'3,5–4 gadi',k:'#2F7D53',s:['Rīgas Valsts tehnikums','Ogres tehnikums','Rīgas Tūrisma un radošās industrijas tehnikums','Rīgas Stila un modes tehnikums','Jelgavas Tehnikums','Smiltenes tehnikums','Saldus tehnikums','Kuldīgas Tehnoloģiju un tūrisma tehnikums','Vidzemes Tehnoloģiju un dizaina tehnikums','Liepājas Valsts tehnikums','Ventspils Tehnikums','Rēzeknes tehnikums','Daugavpils Tehnoloģiju un tūrisma tehnikums']},
- {b:'C',n:'Mākslu, mūzikas un dejas izglītība',i:'4 gadi',k:'#5B4B8A',s:['Rīgas Dizaina un mākslas vidusskola','Rīgas Mākslas un mediju tehnikums','Nacionālā Mākslu vidusskola','Jāzepa Mediņa Rīgas Mūzikas vidusskola','Jelgavas Mūzikas vidusskola','Ventspils Mūzikas vidusskola','Daugavpils Dizaina un mākslas vidusskola „Saules skola”']},
- {b:'D',n:'Arodizglītība',i:'2,5–3 gadi',k:'#C75000',s:['Rīgas Valsts tehnikums','Ogres tehnikums','Smiltenes tehnikums','Saldus tehnikums','Rīgas Stila un modes tehnikums','Vidzemes Tehnoloģiju un dizaina tehnikums']},
- {b:'E',n:'Sporta un citi specializētie virzieni',i:'3–4 gadi',k:'#8a5a1f',s:['Murjāņu sporta ģimnāzija','Mārupes Valsts ģimnāzija','Jūrmalas Valsts ģimnāzija']}
+ {b:'A',n:'Vispārējā vidējā izglītība',i:'3 gadi · atestāts',k:'#1F4E79',
+  p:'Vidusskola vai ģimnāzija: profesiju neapgūst, no 10. klases izvēlas virzienu un padziļinātos kursus. Noslēgumā — atestāts par vispārējo vidējo izglītību un iespēja studēt augstskolā. Rīgas valsts ģimnāzijās uzņem pēc vienotā iestājpārbaudījuma matemātikā, novadu vidusskolās — pēc pašvaldības kārtības.',
+  s:['Mārupes Valsts ģimnāzija','Babītes vidusskola, Piņķi','Olaines 1. vidusskola','Olaines 2. vidusskola','Ķekavas vidusskola','Baložu vidusskola','Baldones vidusskola','Ozolnieku vidusskola','Jūrmalas Valsts ģimnāzija','Jelgavas Valsts ģimnāzija','Jelgavas Spīdolas Valsts ģimnāzija','Rīgas Valsts 1. ģimnāzija','Rīgas Valsts 2. ģimnāzija','Rīgas Valsts 3. ģimnāzija','Rīgas Āgenskalna Valsts ģimnāzija','Rīgas Valsts klasiskā ģimnāzija','Rīgas Valsts vācu ģimnāzija','Rīgas Angļu ģimnāzija']},
+ {b:'B',n:'Profesionālā vidējā izglītība',i:'4 gadi · diploms un profesija',k:'#2F7D53',
+  p:'Tehnikums vai profesionālā vidusskola: vidējo izglītību un profesiju iegūst vienlaikus, ar praksi uzņēmumā. Noslēgumā — diploms par profesionālo vidējo izglītību: var sākt strādāt savā profesijā vai studēt augstskolā. Daudzās programmās skolēni saņem stipendiju.',
+  s:['Rīgas Valsts tehnikums','Rīgas Tūrisma un radošās industrijas tehnikums','Rīgas Stila un modes tehnikums','Ogres tehnikums','Jelgavas tehnikums','Smiltenes tehnikums','Saldus tehnikums','Kuldīgas Tehnoloģiju un tūrisma tehnikums','Vidzemes Tehnoloģiju un dizaina tehnikums','Liepājas Valsts tehnikums','Ventspils tehnikums','Rēzeknes tehnikums','Daugavpils Tehnoloģiju un tūrisma tehnikums']},
+ {b:'C',n:'Profesionālā vidējā izglītība mākslā, mūzikā un dejā',i:'4 gadi · diploms un profesija',k:'#5B4B8A',
+  p:'Tas pats ceļš, kas B, tikai kultūras un mākslas nozarēs. Uzņemšana sākas jau pavasarī — agrāk nekā citur — un gandrīz vienmēr ir radošo spēju iestājpārbaudījumi; mākslā un dizainā arī darbu mape. Gatavoties jāsāk vismaz gadu iepriekš.',
+  s:['Rīgas Dizaina un mākslas vidusskola','Rīgas Mākslu un mediju tehnikums','Nacionālā Mākslu vidusskola (deja, mūzika, māksla)','Jāzepa Mediņa Rīgas Mūzikas vidusskola','Jelgavas Mūzikas vidusskola','Ventspils Mūzikas vidusskola','Daugavpils Dizaina un mākslas vidusskola „Saules skola”','Latgales Mūzikas un mākslas vidusskola (Rēzekne)']},
+ {b:'D',n:'Arodizglītība',i:'3 gadi · atestāts par arodizglītību',k:'#C75000',
+  p:'Īsākais ceļš līdz amatam. Svarīgi: vidējo izglītību šis ceļš nedod — to var iegūt vēlāk, mācoties vēl 1–1,5 gadus. Piedāvājums ir šaurs un mainās katru gadu, tāpēc aktuālās programmas pārbaudi NIID.lv.',
+  s:['Pavāra palīgs — Rīgas Tūrisma un radošās industrijas tehnikums','Pavāra palīgs — Smiltenes tehnikums (Alsviķi)','Apdares darbu strādnieks — Smiltenes tehnikums (Alsviķi)','Apavu labotājs — Smiltenes tehnikums (Alsviķi)','Frizieris — Daugavpils Tehnoloģiju un tūrisma tehnikums']},
+ {b:'E',n:'Ja apliecības nav vai ir citi šķēršļi',i:'individuāli',k:'#8a5a1f',
+  p:'Arī tad, ja kaut kas neizdodas, ceļš nebeidzas. Ja visos mācību priekšmetos gada vērtējums ir vismaz 4 un bez vērtējuma palicis ne vairāk kā viens eksāmens, mācības var turpināt arodizglītībā, saņemot atbalstu tā nokārtošanai. Par konkrētu risinājumu runā ar karjeras konsultantu.',
+  s:['Arodizglītība ar atbalstu nenokārtotā eksāmena kārtošanai','Profesionālā pamatizglītība (2–3 gadi; uzņem ar 7., 8. vai 9. klases apliecību)','Pamatizglītības turpināšana līdz 18 gadu vecumam','Speciālās izglītības programmas','Saruna ar klases audzinātāju vai karjeras konsultantu']}
 ];
 var izvCeli=[];
 var cE=document.getElementById('celi'),izvE=document.getElementById('izvelne');
@@ -328,7 +342,7 @@ CELI.forEach(function(c,i){
 });
 function ceļiRādi(){
   if(!izvCeli.length){
-    izvE.innerHTML='<div class="izv-bloks"><p class="tukšs">Atzīmē divus ceļus, un šeit parādīsies to izglītības iestādes.</p></div>'+
+    izvE.innerHTML='<div class="izv-bloks"><p class="tukšs">Atzīmē divus ceļus, un šeit parādīsies to izglītības iestādes un paskaidrojums.</p></div>'+
       '<div class="izv-bloks"><p class="tukšs">&nbsp;</p></div>';
     return;
   }
@@ -336,15 +350,13 @@ function ceļiRādi(){
     var c=CELI[i];
     return '<div class="izv-bloks" style="border-color:'+c.k+'">'+
       '<h3 style="color:'+c.k+'">'+c.b+'. '+c.n+'</h3>'+
-      '<div class="iest-saraksts" data-c="'+poz+'">'+c.s.map(function(x){return '<button type="button" class="iest">'+x+'</button>';}).join('')+'</div>'+
-      '<span class="lab">Mana izvēle un programma</span>'+
-      '<textarea id="cels-'+poz+'" rows="2" placeholder="Iestāde un programma"></textarea></div>';
+      '<div class="iest-saraksts" data-c="'+poz+'">'+c.s.map(function(x){return '<button type="button" class="iest" aria-pressed="false">'+x+'</button>';}).join('')+'</div>'+
+      '<p class="izv-skaidr">'+c.p+'</p></div>';
   }).join('')+(izvCeli.length===1?'<div class="izv-bloks"><p class="tukšs">Atzīmē vēl vienu ceļu.</p></div>':'');
   izvE.querySelectorAll('.iest').forEach(function(b){
     b.addEventListener('click',function(){
-      var poz=b.closest('.iest-saraksts').dataset.c,l=document.getElementById('cels-'+poz);
-      l.value=(l.value?l.value.replace(/\s*$/,'')+'; ':'')+b.textContent;
-      l.focus();
+      var c=b.getAttribute('aria-pressed')==='true';
+      b.setAttribute('aria-pressed',c?'false':'true');
     });
   });
 }
@@ -431,7 +443,9 @@ function būvēDruku(){
   var t3='';
   izvCeli.forEach(function(i,poz){
     var c=CELI[i];
-    t3+=rinda(c.b+'. '+c.n,v('cels-'+poz)||'ceļš izvēlēts, iestāde vēl nav pierakstīta');
+    var izv=[];
+    izvE.querySelectorAll('.iest-saraksts[data-c="'+poz+'"] .iest[aria-pressed="true"]').forEach(function(b){izv.push(b.textContent);});
+    t3+=rinda(c.b+'. '+c.n,izv.length?izv.join('; '):'ceļš izvēlēts, iestāde vēl nav atzīmēta');
   });
   if(t3){h+='<h2>Mans ceļš pēc 9. klases</h2><table>'+t3+'</table>';}
 
